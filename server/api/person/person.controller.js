@@ -41,6 +41,62 @@ exports.show = function(req, res) {
   });
 };
 
+exports.getPersonFriendByInterestOfset = function (req,res) {
+  if (req.params.startIndex && req.params.rowCount) {
+    var offsetIndex = parseInt(req.params.startIndex);
+    var ofsetCount = parseInt(req.params.rowCount);
+    var result = {
+      personCount: 0,
+      personArray: []
+    };
+    console.time('mongo corr ofset');
+    Person.find({isActive: true}).sort({firstName: 1}).skip(offsetIndex).limit(ofsetCount - offsetIndex).exec(function (error, personData) {
+      console.timeEnd('mongo corr ofset');
+      if (!error) {
+        console.time('mongo corr count');
+        Person.count({isActive: true}).exec(function (error, count) {
+          console.timeEnd('mongo corr count');
+          result.personCount = count;
+          result.personArray = personData;
+          callback(false, result);
+        });
+      } else {
+        callback(true, null);
+      }
+    });
+  } else {
+    callback(true, null);
+  }
+}
+
+/*CorrespondentModel.prototype.getCorrespondentByOfset = function (startIndex, rowCount, callback) {
+  var instance = this;
+  if (startIndex && rowCount) {
+    var offsetIndex = parseInt(startIndex);
+    var ofsetCount = parseInt(rowCount);
+    var result = {
+      correspondentCount: 0,
+      correspondentArray: []
+    };
+    console.time('mongo corr ofset');
+    instance.Correspondent.find({isActive: true}).sort({displayName: 1}).skip(offsetIndex).limit(ofsetCount - offsetIndex).exec(function (error, correspondentData) {
+      console.timeEnd('mongo corr ofset');
+      if (!error) {
+        console.time('mongo corr count');
+        instance.Correspondent.count({isActive: true}).exec(function (error, count) {
+          console.timeEnd('mongo corr count');
+          result.correspondentCount = count;
+          result.correspondentArray = correspondentData;
+          callback(false, result);
+        });
+      } else {
+        callback(true, null);
+      }
+    });
+  } else {
+    callback(true, null);
+  }
+};*/
 
 /*exports.getPersonInterest = function (req,res) {
   var personInterest = [];
