@@ -1,0 +1,7 @@
+
+node_modules/ws/build/Release/obj.target/
+npm-debug.log.orig
+node_modules
+bower_components
+client/bower_components
+npm-debug.log
