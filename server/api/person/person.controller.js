@@ -67,7 +67,7 @@ exports.getPersonFriendByInterestOfset = function (req,res) {
   } else {
     callback(true, null);
   }
-}
+};
 
 /*CorrespondentModel.prototype.getCorrespondentByOfset = function (startIndex, rowCount, callback) {
   var instance = this;
